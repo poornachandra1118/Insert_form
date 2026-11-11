@@ -20,13 +20,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@x+9%u4dz#qdh&=7+vxcm+3xlb+^4b(2fjib=zqqld#w#9f2qe'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Security settings
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-change-this-key-for-local-development'
+)
+
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+
+# ALLOWED_HOSTS = [
+#     'insert-form.onrender.com',
+#     'localhost',
+#     '127.0.0.1',
+# ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://insert-form.onrender.com',
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
