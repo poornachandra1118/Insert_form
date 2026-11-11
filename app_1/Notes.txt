@@ -1,0 +1,69 @@
+CRUD oepration with Django ModelForms
+
+C :Create
+R :Read
+U :Update
+D :Delete
+
+while working in update and delete we required the data in my existing data.
+while checking the user data is exist or not we can use some of method with a name of 
+get_object_or_404(model_data,id=pk)
+
+Ex:
+----
+
+def Index(req):
+    form=Employee_form()
+    
+    if req.method=='POST':
+        form=Employee_form(req.POST)
+        if form.is_valid():
+            form.save()
+    Emp_data=Employee.objects.all()
+    context={
+        'forms':form,
+        'Emp_data':Emp_data
+    }
+    return render(req,'Index.html',context)
+
+
+def update(req,pk):
+    employee=get_object_or_404(Employee,id=pk)
+    
+    if req.method=='POST':
+        form=Employee_form(req.POST,instance=employee)
+        form.save()
+        return redirect('index_page')
+        
+    else:
+        form=Employee_form(instance=employee)
+    context={
+        'forms':form
+    }
+    return render(req,'Update.html',context)
+
+
+
+def delete(req,pk):
+    employee=get_object_or_404(Employee,id=pk)
+    form=Employee_form(instance=employee)
+    if req.method=='POST':
+        employee.delete()
+        return redirect('index_page')
+    else:
+        form=Employee_form(instance=employee)
+    context={
+        'forms':form
+    }
+    return render(req,'Delete.html',context)
+
+
+filtrations:
+------------
+In django filters are not access the data any things , it just change the visualization 
+of the given data values.
+
+while apply any filters we can use | symbol and then add filter name.
+
+{{variable|filter_name}}
+
